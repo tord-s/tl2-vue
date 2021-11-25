@@ -6,12 +6,11 @@
 
         <ul class="list" v-if="albums">
           <li class="inline-block m-10 hover:bg-gray-300 bg-gray-200 bg-gray-100 border-6 px-10 py-5" v-for="album in albums" :key="album._id">
-            <router-link :to="{name: 'Album', params: {artist: album.artist, title: album.title}}">
+            
               <h2 class="text-2xl font-bold text-blue-800 mb-4">{{ album.title }} </h2>
-              <img class="shadow-lg" v-if="album.cover" :src="imageUrlFor(album.cover).ignoreImageParams().width(240)"/>
-              <h2 class="text-xl font-bold text-gray-700 mt-2 ">{{ album.artist }} </h2>
-              <h2 class="font-medium text-gray-600"><em>{{ album.releaseYear }}</em></h2>
-            </router-link>
+              <!-- <img class="shadow-lg" v-if="album.cover" :src="imageUrlFor(album.cover).ignoreImageParams().width(240)"/> -->
+              <h2 class="text-xl font-bold text-gray-700 mt-2 ">{{ album.description }} </h2>
+              <h2 class="font-medium text-gray-600"><em>{{ album.apiUrl }}</em></h2>
           </li>
         </ul>
       </div>
@@ -35,13 +34,7 @@ export default {
     onMounted(() => {
       fetchAlbums();
     })
-    const groqQuery = `*[ _type=='album']{
-                    "artist":artist->name,
-                    _id,
-                    cover,
-                    title,
-                    releaseYear,
-                    }`;
+    const groqQuery = `*[ _type=='evaluation']{_id,title,apiUrl,description}`;
 
     let albums = ref([])
 
